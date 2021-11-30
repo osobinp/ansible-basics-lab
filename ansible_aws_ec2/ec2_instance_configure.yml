@@ -1,12 +1,12 @@
 ---
-- hosts: "{{ jenkins_hosts }}"
+- hosts: "{{ linux_hosts }}"
   become: yes
   remote_user: ec2-user
   become_user: root
 
   tasks:
 
-  - name: Include vars
+  - name: "Include vars"
     include_vars:
       file: ec2_vars.yaml
 
@@ -70,7 +70,7 @@
       regexp: '^PasswordAuthentication'
       line: PasswordAuthentication yes
 
-  - name: Restart service sshd
+  - name: "Restart service sshd"
     ansible.builtin.service:
       name: sshd
       state: restarted
