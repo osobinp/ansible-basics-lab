@@ -1,0 +1,30 @@
+---
+- hosts: "{{ linux_hosts }}"
+  become: yes
+  remote_user: ec2-user
+  become_user: ansiblesvc
+
+  tasks:
+
+  - name: "Include vars"
+    include_vars:
+      file: ec2_vars.yaml
+
+  - name: "Example clone of a single branch"
+    ansible.builtin.git:
+      repo: "{{ git_repo }}"
+      dest: "{{ svc_home_repodir }}"
+      single_branch: yes
+      version: master
+
+  - name: "Change file ownership, group and permissions"
+    ansible.builtin.file:
+      path: "{{ svc_home_repodir }}/virtualenv.sh"
+      owner: "{{ svc_account }}"
+      group: "{{ svc_account }}"
+      mode: '0700'
+
+  - name: "Create virtualenv"
+    ansible.builtin.shell: "{{ svc_home_repodir }}/virtualenv.sh"
+    args:
+      chdir: "{{ svc_home_repodir }}"

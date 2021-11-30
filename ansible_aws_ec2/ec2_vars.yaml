@@ -1,0 +1,7 @@
+---
+this_year: 2021
+my_secret_pw: "ITforSHE2021"
+git_repo: "https://github.com/osobinp/ansible-basics.git"
+svc_account: ansiblesvc
+svc_home: "/home/{{ svc_account }}"
+svc_home_repodir: "{{ svc_home }}/ansible-basics"

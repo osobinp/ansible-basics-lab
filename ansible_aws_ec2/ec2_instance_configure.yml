@@ -1,0 +1,76 @@
+---
+- hosts: "{{ jenkins_hosts }}"
+  become: yes
+  remote_user: ec2-user
+  become_user: root
+
+  tasks:
+
+  - name: Include vars
+    include_vars:
+      file: ec2_vars.yaml
+
+  - name: "Upgrade all packages"
+    yum:
+      name: '*'
+      state: latest
+
+  - name: "Enable EPEL repository"
+    command: "amazon-linux-extras install epel -y"
+
+  - name: "Import a key from a file"
+    ansible.builtin.rpm_key:
+      state: present
+      key: /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+
+  - name: "Install deps"
+    yum:
+      name: "{{ package }}"
+      state: present
+      update_cache: yes
+    vars:
+      package:
+      - wget
+      - git
+      - python3-pip
+      - python-virtualenv
+      - sshpass
+
+  - name: "Ensure group {{ svc_account }} exists with correct gid"
+    ansible.builtin.group:
+      name: "{{ svc_account }}"
+      state: present
+      gid: "{{ this_year }}"
+
+  - name: "Add the user {{ svc_account }}"
+    ansible.builtin.user:
+      name: "{{ svc_account }}"
+      shell: /bin/bash
+      group: "{{ svc_account }}"
+      uid: "{{ this_year }}"
+      create_home: yes
+      home: "{{ svc_home }}"
+      groups: wheel
+      append: yes
+      password: "{{ my_secret_pw | password_hash('sha512', 'mysecretsalt') }}"
+      generate_ssh_key: yes
+      ssh_key_bits: 2048
+      ssh_key_file: .ssh/id_rsa
+
+  - name: "Allow wheel group to run sudo without password"
+    ansible.builtin.lineinfile:
+      path: /etc/sudoers
+      regexp: '^%wheel'
+      line: "%wheel        ALL=(ALL)       NOPASSWD: ALL"
+      validate: 'visudo -cf %s'
+
+  - name: "Enable password sshd_config authentication"
+    ansible.builtin.lineinfile:
+      path: /etc/ssh/sshd_config
+      regexp: '^PasswordAuthentication'
+      line: PasswordAuthentication yes
+
+  - name: Restart service sshd
+    ansible.builtin.service:
+      name: sshd
+      state: restarted
