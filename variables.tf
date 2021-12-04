@@ -15,12 +15,12 @@ variable "external_ip" {
 
 variable "instance_type" {
   type    = string
-  default = "t2.micro"
+  default = "t2.medium"
 }
 
 variable "instance_count" {
   type    = number
-  default = 20
+  default = 16
 }
 
 variable "webserver_port" {

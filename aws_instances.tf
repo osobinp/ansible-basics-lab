@@ -25,9 +25,14 @@ resource "aws_instance" "lab_instances" {
     "Name" = join("_", ["ansible_workhorse", count.index + 1])
   }
 
+  depends_on = [
+        aws_main_route_table_association.set-master-default-rt-assoc, aws_route_table.route_internet
+    ]
+
   provisioner "local-exec" {
     command = <<EOF
 aws --profile ${var.profile} ec2 wait instance-status-ok --region ${var.region-master} --instance-ids ${self.id}
+sleep 60
 ansible-playbook -e 'linux_hosts=tag_Name_${self.tags.Name}' ansible_aws_ec2/ec2_instance_configure.yml
 ansible-playbook -e 'linux_hosts=tag_Name_${self.tags.Name}' ansible_aws_ec2/ec2_user_configure.yml
 EOF
