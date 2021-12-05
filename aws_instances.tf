@@ -26,8 +26,8 @@ resource "aws_instance" "lab_instances" {
   }
 
   depends_on = [
-        aws_main_route_table_association.set-master-default-rt-assoc, aws_route_table.route_internet
-    ]
+    aws_main_route_table_association.set-master-default-rt-assoc, aws_route_table.route_internet
+  ]
 
   provisioner "local-exec" {
     command = <<EOF
