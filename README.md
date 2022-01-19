@@ -12,4 +12,5 @@ You need to have:
 
 - access to AWS via `aws` command
 - s3 bucket to store state file
+- boto3
 - ssh-key generated and located in ~/.ssh/ (can be done via ssh-keygen)
