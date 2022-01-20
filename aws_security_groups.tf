@@ -2,7 +2,7 @@
 resource "aws_security_group" "lab-master-sg" {
   provider    = aws.region-master
   name        = "lab-master-sg"
-  description = "Allow TCP/8080 & TCP/22 & TCP/80"
+  description = "Allow TCP/8080 & TCP/22 & TCP/80 & TCP/443"
   vpc_id      = aws_vpc.lab_vpc_master.id
 
   ingress {
@@ -15,10 +15,19 @@ resource "aws_security_group" "lab-master-sg" {
   }
 
   ingress {
-    description = "Allow TCP/22 for our public IP"
+    description = "Allow TCP/80 for our public IP"
     cidr_blocks = [var.external_ip]
     from_port   = 80
     to_port     = 80
+    protocol    = "tcp"
+
+  }
+
+  ingress {
+    description = "Allow TCP/443 for our public IP"
+    cidr_blocks = [var.external_ip]
+    from_port   = 443
+    to_port     = 443
     protocol    = "tcp"
 
   }

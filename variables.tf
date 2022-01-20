@@ -20,7 +20,7 @@ variable "instance_type" {
 
 variable "instance_count" {
   type    = number
-  default = 32
+  default = 2
 }
 
 variable "webserver_port" {
