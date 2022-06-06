@@ -1,6 +1,6 @@
 ---
 this_year: 2022
-my_secret_pw: "womenintechsummit.pl.2022"
+my_secret_pw: "wits.2022"
 git_repo: "https://github.com/osobinp/ansible-basics.git"
 svc_account: ansiblesvc
 svc_home: "/home/{{ svc_account }}"
