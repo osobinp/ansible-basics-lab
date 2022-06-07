@@ -35,6 +35,7 @@
       - python3-pip
       - python-virtualenv
       - sshpass
+      - firewalld
 
   - name: "Ensure group {{ svc_account }} exists with correct gid"
     ansible.builtin.group:
