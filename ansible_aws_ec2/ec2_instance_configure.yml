@@ -70,6 +70,12 @@
       regexp: '^PasswordAuthentication'
       line: PasswordAuthentication yes
 
+  - name: "Enable password sshd_config authentication"
+    ansible.builtin.lineinfile:
+      path: /etc/ssh/sshd_config
+      regexp: '^PubkeyAuthentication'
+      line: PubkeyAuthentication yes
+
   - name: "Restart service sshd"
     ansible.builtin.service:
       name: sshd
