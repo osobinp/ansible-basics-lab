@@ -53,9 +53,9 @@
       groups: wheel
       append: yes
       password: "{{ my_secret_pw | password_hash('sha512', 'mysecretsalt') }}"
-      generate_ssh_key: yes
-      ssh_key_bits: 2048
-      ssh_key_file: .ssh/id_rsa
+      # generate_ssh_key: yes
+      # ssh_key_bits: 2048
+      # ssh_key_file: .ssh/id_rsa
 
   - name: "Allow wheel group to run sudo without password"
     ansible.builtin.lineinfile:
