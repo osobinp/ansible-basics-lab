@@ -10,11 +10,6 @@
     include_vars:
       file: ec2_vars.yaml
 
-  - name: "Upgrade all packages"
-    yum:
-      name: '*'
-      state: latest
-
   - name: "Enable EPEL repository"
     command: "amazon-linux-extras install epel -y"
 
@@ -35,6 +30,7 @@
       - python3-pip
       - python-virtualenv
       - sshpass
+      - unzip
       - firewalld
 
   - name: "Ensure group {{ svc_account }} exists with correct gid"
@@ -42,6 +38,12 @@
       name: "{{ svc_account }}"
       state: present
       gid: "{{ this_year }}"
+
+  - name: "Ensure group {{ svc_www_account }} exists with correct gid"
+    ansible.builtin.group:
+      name: "{{ svc_www_account }}"
+      state: present
+      gid: "{{ this_year | int + 1 }}"
 
   - name: "Add the user {{ svc_account }}"
     ansible.builtin.user:
@@ -57,6 +59,17 @@
       # generate_ssh_key: yes
       # ssh_key_bits: 2048
       # ssh_key_file: .ssh/id_rsa
+
+  - name: "Add the user {{ svc_www_account }}"
+    ansible.builtin.user:
+      name: "{{ svc_www_account }}"
+      shell: /bin/bash
+      group: "{{ svc_www_account }}"
+      uid: "{{ this_year | int + 1 }}"
+      create_home: yes
+      home: "{{ svc_www_home }}"
+      append: yes
+      password: "{{ my_secret_pw | password_hash('sha512', 'mysecretsalt') }}"
 
   - name: "Allow wheel group to run sudo without password"
     ansible.builtin.lineinfile:

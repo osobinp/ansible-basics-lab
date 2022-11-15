@@ -1,7 +1,9 @@
 ---
 this_year: 2022
-my_secret_pw: "wits.2022"
+my_secret_pw: "wit.{{ this_year }}"
 git_repo: "https://github.com/osobinp/ansible-basics.git"
 svc_account: ansiblesvc
+svc_www_account: apachesvc
 svc_home: "/home/{{ svc_account }}"
+svc_www_home: "/home/{{ svc_www_account }}"
 svc_home_repodir: "{{ svc_home }}/ansible-basics"
