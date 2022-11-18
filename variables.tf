@@ -20,7 +20,7 @@ variable "instance_type" {
 
 variable "instance_count" {
   type    = number
-  default = 1 #46
+  default = 2 #46
 }
 
 variable "webserver_port" {
@@ -33,5 +33,7 @@ variable "override_s3_key" {
 }
 
 locals {
-  ec2_keypair = var.override_s3_key != "" ? var.override_s3_key : "keypair-${timestamp()}"
+  current_timestamp  = timestamp()
+  current_date       = formatdate("YYYY-MM-DD-hh-mm-ss", local.current_timestamp)
+  ec2_keypair = var.override_s3_key != "" ? var.override_s3_key : "keypair-${local.current_date}"
 }

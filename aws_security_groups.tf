@@ -69,6 +69,15 @@ resource "aws_security_group" "lab-master-sg" {
   }
 
   ingress {
+    description = "Allow TCP/2049 for our public IP"
+    cidr_blocks = [var.external_ip]
+    from_port   = 2049
+    to_port     = 2049
+    protocol    = "tcp"
+
+  }
+
+  ingress {
     description = "Allow anyone on port 8080"
     from_port   = var.webserver_port
     to_port     = var.webserver_port

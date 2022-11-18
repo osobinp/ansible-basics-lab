@@ -1,7 +1,7 @@
 [teleport_server]
 ${teleport_server_public_dns}
  
-[teleport_clients]
+[linux_hosts]
 %{ for index, dns in teleport_clients_public_dns ~}
 ${dns}
 %{ endfor ~}

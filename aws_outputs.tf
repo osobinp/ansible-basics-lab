@@ -20,5 +20,5 @@ resource "local_file" "ansible_hosts_inventory" {
     teleport_clients_public_dns = aws_instance.lab_instances.*.public_dns
     }
   )
-  filename = "hosts_${timestamp()}"
+  filename = "hosts_${local.current_date}"
 }
