@@ -1,5 +1,5 @@
 ---
-this_year: 2022
+this_year: 2023
 my_secret_pw: "wit.{{ this_year }}"
 git_repo: "https://github.com/osobinp/ansible-basics.git"
 svc_account: ansiblesvc
