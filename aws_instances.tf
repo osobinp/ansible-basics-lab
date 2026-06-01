@@ -1,7 +1,7 @@
 # Get Linux AMI ID using SSM Parameter endpoint
 data "aws_ssm_parameter" "Linux_AMI_master" {
   provider = aws.region-master
-  name     = "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
+  name     = "/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64"
 }
 
 # Provide public key for EC2 instances
@@ -64,6 +64,7 @@ aws --profile ${var.profile} ec2 wait instance-status-ok --region ${var.region-m
 sleep 60
 ansible-playbook -e 'linux_hosts=tag_Name_${self.tags.Name}' ansible_aws_ec2/ec2_instance_configure.yml
 ansible-playbook -e 'linux_hosts=tag_Name_${self.tags.Name}' ansible_aws_ec2/ec2_user_configure.yml
+ansible-playbook -e 'linux_hosts=tag_Name_${self.tags.Name}' ansible_aws_ec2/ec2_instance_bootc.yml
 EOF
   }
 
