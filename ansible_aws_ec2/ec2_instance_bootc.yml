@@ -1,13 +1,26 @@
 ---
-# Only for BootC systems !
-- name: Run bootc install to existing root via Podman
-  ansible.builtin.shell:
-    cmd: >
-      podman run --rm --privileged 
-      -v /dev:/dev 
-      -v /var/lib/containers:/var/lib/containers 
-      -v /:/target 
-      --pid=host 
-      --security-opt label=type:unconfined_t 
-      quay.io/pawel_osobinski72/bootc-basics:main 
-      bootc install to-existing-root
+
+---
+- hosts: "{{ linux_hosts }}"
+  become: yes
+  remote_user: ec2-user
+  become_user: root
+
+  tasks:
+
+    - name: "Include vars"
+      include_vars:
+        file: ec2_vars.yaml
+
+    # Only for BootC systems !
+    - name: Run bootc install to existing root via Podman
+      ansible.builtin.shell:
+        cmd: >
+          podman run --rm --privileged 
+          -v /dev:/dev 
+          -v /var/lib/containers:/var/lib/containers 
+          -v /:/target 
+          --pid=host 
+          --security-opt label=type:unconfined_t 
+          quay.io/pawel_osobinski72/bootc-basics:main 
+          bootc install to-existing-root
