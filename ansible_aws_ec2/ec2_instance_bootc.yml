@@ -24,7 +24,7 @@
           bootc install to-existing-root
 
     - name: Reboot server to run bootc
-      shell: "sleep 2 && reboot"
+      shell: "nohup sleep 10 && reboot &"
       async: 0
       poll: 0
       ignore_errors: yes
