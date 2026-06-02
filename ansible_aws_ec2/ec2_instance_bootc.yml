@@ -22,3 +22,9 @@
           --security-opt label=type:unconfined_t 
           quay.io/pawel_osobinski72/bootc-basics:main 
           bootc install to-existing-root
+
+    - name: Reboot server to run bootc
+      shell: "sleep 2 && reboot"
+      async: 0
+      poll: 0
+      ignore_errors: yes
