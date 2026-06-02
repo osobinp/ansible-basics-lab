@@ -1,6 +1,4 @@
 ---
-
----
 - hosts: "{{ linux_hosts }}"
   become: yes
   remote_user: ec2-user
